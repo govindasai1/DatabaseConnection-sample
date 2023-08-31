@@ -18,14 +18,13 @@ fun Route.studentRouting(){
 
         get("{id?}"){
             val id = call.parameters["id"]?:return@get call.respondText("ID CANT BE NULL", status = HttpStatusCode.BadRequest)
-            call.respond(Obj.getStudentById(id) ?:"NO STUDENT WITH $id PRESENT")
+            call.respond(Obj.getStudentById(id.toInt()) ?:"NO STUDENT WITH $id PRESENT")
         }
 
 
         post {
             val student = call.receive<Student>()
             call.respond(Obj.insert(student.id,student.name,student.age)?:"not inserted")
-
         }
 
         put {
@@ -33,14 +32,12 @@ fun Route.studentRouting(){
             val result = Obj.update(student.id,student.name,student.age)
             if (result==1) call.respond("ID UPDATED")
             else call.respond("${student.id} WITH STUDENT NOT PRESENT")
-
         }
 
 
         delete("{id?}") {
             val id =call.parameters["id"]?:return@delete call.respondText("ENTER ID", status = HttpStatusCode.BadRequest)
-            call.respond(Obj.deleteById(id))
-
+            call.respond(Obj.deleteById(id.toInt()))
         }
 
     }

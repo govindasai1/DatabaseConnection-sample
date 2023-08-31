@@ -2,14 +2,15 @@ package com.example.database
 
 import com.example.dao.StudentDao
 import com.example.data.Student
+import com.example.data.StudentTable
+import com.example.routes.Obj
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class StudentMethodsCall:StudentDao {
 
 
-    override suspend fun insert(id: String, name: String, age: Int): Student? {
+    override suspend fun insert(id: Int, name: String, age: Int): Student? {
        return DatabaseFactory.dbQuery {
            val statement= StudentTable.insert {
                 it[StudentTable.id]=id
@@ -24,15 +25,15 @@ class StudentMethodsCall:StudentDao {
     }
 
     override suspend fun getAllStudents(): List<Student> {
-        var x: List<Student> = DatabaseFactory.dbQuery {
+        var listOfStudents: List<Student> = DatabaseFactory.dbQuery {
             StudentTable.selectAll().mapNotNull {
                 rowToStudent(it)
             }
         }
-        return x
+        return listOfStudents
     }
 
-    override suspend fun getStudentById(id: String): Student? {
+    override suspend fun getStudentById(id: Int): Student? {
        var x= DatabaseFactory.dbQuery {
             StudentTable.select {StudentTable.id.eq(id)
             }.map {
@@ -42,7 +43,7 @@ class StudentMethodsCall:StudentDao {
         return x
     }
 
-    override suspend fun deleteById(id: String): String {
+    override suspend fun deleteById(id: Int): String {
         var x=DatabaseFactory.dbQuery {
             StudentTable.deleteWhere {
                 this.id.eq(id) }
@@ -52,7 +53,7 @@ class StudentMethodsCall:StudentDao {
 
     }
 
-    override suspend fun update(id: String, name: String, age: Int): Int {
+    override suspend fun update(id: Int, name: String, age: Int): Int {
        return DatabaseFactory.dbQuery {
             StudentTable.update({StudentTable.id.eq(id)}){
                 it[StudentTable.name] = name
