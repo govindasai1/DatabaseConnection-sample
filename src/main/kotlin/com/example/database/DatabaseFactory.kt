@@ -1,6 +1,7 @@
 package com.example.database
 
 import com.example.data.BookTable
+import com.example.data.StudentInfoTable
 import com.example.data.StudentTable
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
@@ -17,7 +18,7 @@ object DatabaseFactory {
         Database.connect(url, driver, user, password)
 
         transaction {
-            SchemaUtils.createMissingTablesAndColumns(StudentTable,BookTable)
+            SchemaUtils.createMissingTablesAndColumns(StudentTable,BookTable,StudentInfoTable)
         }
     }
 

@@ -1,7 +1,9 @@
 package com.example.database
 
 import com.example.dao.StudentDao
+import com.example.data.BookTable
 import com.example.data.Student
+import com.example.data.StudentInfoTable
 import com.example.data.StudentTable
 import com.example.routes.Obj
 import org.jetbrains.exposed.sql.*
@@ -44,13 +46,29 @@ class StudentMethodsCall:StudentDao {
     }
 
     override suspend fun deleteById(id: Int): String {
-        var x=DatabaseFactory.dbQuery {
-            StudentTable.deleteWhere {
-                this.id.eq(id) }
+        if (findingPresence(id)) {
+            if (findingPresenceBook(id)){
+                DatabaseFactory.dbQuery {
+                    BookTable.deleteWhere {
+                        this.studentId.eq(id)
+                    }
+                }
+            }
+            if(findingPresenceStudentInfo(id)) {
+                DatabaseFactory.dbQuery {
+                    StudentInfoTable.deleteWhere {
+                        this.studentId.eq(id)
+                    }
+                }
+            }
+            DatabaseFactory.dbQuery {
+                StudentTable.deleteWhere {
+                    this.id.eq(id)
+                }
+            }
+            return "Student deleted"
         }
-        return if(x==0) "not deleted"
-        else "deleted"
-
+        else return "user not found"
     }
 
     override suspend fun update(id: Int, name: String, age: Int): Int {
@@ -73,4 +91,12 @@ class StudentMethodsCall:StudentDao {
         )
 
     }
+    suspend fun findingPresenceStudentInfo(userId:Int):Boolean{
+        return DatabaseFactory.dbQuery { StudentInfoTable.select { StudentInfoTable.studentId.eq(userId)}.count()>0}
+    }
+    suspend fun findingPresenceBook(userId:Int):Boolean{
+        return DatabaseFactory.dbQuery { BookTable.select { BookTable.studentId.eq(userId)}.count()>0}
+
+    }
 }
+
