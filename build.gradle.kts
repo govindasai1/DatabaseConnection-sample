@@ -39,6 +39,5 @@ dependencies {
     implementation("org.postgresql:postgresql:$postgeqsql_version")
     implementation("com.zaxxer:HikariCP:$Hikari_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-//    implementation (com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1)
 
 }

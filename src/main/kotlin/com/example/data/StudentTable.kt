@@ -7,5 +7,4 @@ object StudentTable : Table() {
     val id: Column<Int> = integer("id")
     val name: Column<String> = varchar("name", length = 252)
     val age: Column<Int> = integer("age")
-    override val primaryKey = PrimaryKey(id)
 }

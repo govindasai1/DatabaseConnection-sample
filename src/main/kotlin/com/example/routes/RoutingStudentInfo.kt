@@ -14,11 +14,11 @@ fun Route.studentInfoRouting(){
             call.respond(Object1.insert(studentInfo.id,studentInfo.city,studentInfo.pinCode)?:"INSERT STUDENT INFO")
         }
         get{
-            call.respond(Object1.getingAll())
+            call.respond(Object1.gettingAll())
         }
         get("{id?}"){
             val id = call.parameters["id"]?:return@get call.respond("ENTER ID")
-            call.respond(Object1.getingStudent(id.toInt())?:"ID NOT FOUND")
+            call.respond(Object1.gettingStudent(id.toInt())?:"ID NOT FOUND")
 
 
         }

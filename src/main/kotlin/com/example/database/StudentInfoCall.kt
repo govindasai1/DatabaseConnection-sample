@@ -20,11 +20,11 @@ class StudentInfoCall :StudentInfoDao{
         else null
     }
 
-    override suspend fun getingAll(): List<StudentInfo> {
+    override suspend fun gettingAll(): List<StudentInfo> {
        return DatabaseFactory.dbQuery { StudentInfoTable.selectAll() }.mapNotNull { rowToStudentInfo(it) }
     }
 
-    override suspend fun getingStudent(id:Int): StudentInfo? {
+    override suspend fun gettingStudent(id:Int): StudentInfo? {
         return DatabaseFactory.dbQuery { StudentInfoTable.select { StudentInfoTable.studentId.eq(id) }.map { rowToStudentInfo(it) }.singleOrNull() }
     }
 

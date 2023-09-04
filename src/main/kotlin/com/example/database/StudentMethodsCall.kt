@@ -5,7 +5,6 @@ import com.example.data.BookTable
 import com.example.data.Student
 import com.example.data.StudentInfoTable
 import com.example.data.StudentTable
-import com.example.routes.Obj
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
@@ -91,10 +90,10 @@ class StudentMethodsCall:StudentDao {
         )
 
     }
-    suspend fun findingPresenceStudentInfo(userId:Int):Boolean{
+    private suspend fun findingPresenceStudentInfo(userId:Int):Boolean{
         return DatabaseFactory.dbQuery { StudentInfoTable.select { StudentInfoTable.studentId.eq(userId)}.count()>0}
     }
-    suspend fun findingPresenceBook(userId:Int):Boolean{
+    private suspend fun findingPresenceBook(userId:Int):Boolean{
         return DatabaseFactory.dbQuery { BookTable.select { BookTable.studentId.eq(userId)}.count()>0}
 
     }
